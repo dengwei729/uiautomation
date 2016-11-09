@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style>
+            body {
+                FONT-SIZE: 12px;
+                FONT-FAMILY: Verdana, Geneva, sans-serif;
+                TEXT-ALIGN: center;
+                BACKGROUND-COLOR: transparent
+            }
+            
+            table{
+                table-layout: fixed;
+                word-break:break-all;
+                border-collapse:collapse;
+                border:1px solid black;;
+                /*width: 100%;*/
+            }
+            th {
+                BORDER-TOP: #000c74 1px solid;
+                HEIGHT: 22px;
+                BORDER-RIGHT: #003 1px solid;
+                BACKGROUND: #f1f1f3;
+                BORDER-BOTTOM: #003 1px solid;
+                FONT-WEIGHT: normal;
+                COLOR: #000;
+                PADDING-BOTTOM: 0px;
+                PADDING-TOP: 0px;
+                PADDING-LEFT: 5px;
+                BORDER-LEFT: #000c74 1px solid;
+                PADDING-RIGHT: 5px
+            }
+            .even td {
+                BORDER-TOP: #555 1px solid; HEIGHT: 22px; BORDER-RIGHT: #333 1px solid;
+            BACKGROUND: #fff; BORDER-BOTTOM: #333 1px solid; COLOR: #000; =
+            BORDER-LEFT: #555 1px solid
+            }
+            .success TD {
+                BORDER-TOP: #555 1px solid; BORDER-RIGHT: #333 1px solid;
+                BACKGROUND: #85ee96; BORDER-BOTTOM: #333 1px solid; COLOR: #000;
+                BORDER-LEFT: #555 1px solid
+            }
+            .success_title TH {
+                BORDER-TOP: #555 1px solid; HEIGHT: 22px; BORDER-RIGHT: #333 1px solid;
+                BACKGROUND: #b5e5ef; BORDER-BOTTOM: #333 1px solid; FONT-WEIGHT: bold;
+                COLOR: #000; BORDER-LEFT: #555 1px solid
+            }
+            .fail_title TH {
+                BORDER-TOP: #555 1px solid; BORDER-RIGHT: #333 1px solid;
+                BACKGROUND: #b5e5ef; BORDER-BOTTOM: #333 1px solid; FONT-WEIGHT: bold;
+                COLOR: #000; BORDER-LEFT: #555 1px solid
+            }
+            .general_title TH {
+                BORDER-TOP: #555 1px solid; HEIGHT: 22px; BORDER-RIGHT: #333 1px solid;
+                BACKGROUND: #b5e5ef; BORDER-BOTTOM: #333 1px solid; FONT-WEIGHT: bold;
+                COLOR: #000; BORDER-LEFT: #555 1px solid
+            }
+            .fail TD {
+                BORDER-TOP: #555 1px solid; BORDER-RIGHT: #333 1px solid;
+                BACKGROUND: #fbadc6; BORDER-BOTTOM: #333 1px solid; COLOR: #000;
+                BORDER-LEFT: #555 1px solid
+            }
+            .unexe TD {
+                BORDER-TOP: #555 1px solid; BORDER-RIGHT: #333 1px solid;
+                BACKGROUND: #ffff41; BORDER-BOTTOM: #333 1px solid; COLOR: #000;
+                BORDER-LEFT: #555 1px solid
+            }
+            .sum TD {
+                BORDER-TOP: #555 0px solid; HEIGHT: 22px; BORDER-RIGHT: #333 1px solid;
+                BACKGROUND: #222; BORDER-BOTTOM: #333 1px solid; COLOR: #fff;
+                BORDER-LEFT: #555 1px solid
+            }
+            td.desc {
+                width: 15%
+            }
+            td.error {
+                width: 40%
+            }
+            .tab {
+                width: 100%
+            }
+
+        </style>
+    </head>
+    <title>Function AutoTest Result</title>
+    <BODY>
+    <br>
+        <DIV class=all=20 style="WIDTH: 1024px; VERTICAL-ALIGN: middle; MARGIN: 0px auto; align: center">
+            <DIV class="tab">
+                <TABLE class="table" cellSpacing=0 cellPadding=0 width='100%' border=0>
+                    <TBODY>
+                        <TR class=general_title>
+                            <TH colSpan=5 align=center><STRONG>All Test Case Results</STRONG></TH></TR>
+                        <TR>
+                            <TH><STRONG>用例数</STRONG></TH>
+                            <TH><STRONG>Failed</STRONG></TH>
+                            <TH><STRONG>Success</STRONG></TH>
+                            <TH><STRONG>Stability</STRONG></TH>
+                            <TH><STRONG>耗时</STRONG></TH>
+                        </TR>
+                        <TR class=even>
+                            <TD >{{total_case_num}}</TD>
+                            <TD >{{fail_case_num}}</TD>
+                            <TD >{{pass_case_num}}</TD>
+                            <TD >{{sabiltity_rate}}</TD>
+                            <TD >{{consume_time}}min</TD>
+                        </TR>
+                    </TBODY>
+                </TABLE>
+            </DIV><br>
+
+            <!--开始处理失败的用例-->
+            {% if fail_case_num > "0" %}
+            <div class=tab>
+            <table >
+                <TR class=fail_title>
+                    <TH colSpan=7 align=center><STRONG>Failed Test Case Results</STRONG></TH>
+                </TR>
+                <TR>
+                    <TH><STRONG>用例名</STRONG></TH>
+                    <TH><STRONG>所属模块</STRONG></TH>
+                    <TH style="width:15%;"><STRONG>描述</STRONG></TH>
+                    <TH style="width:35%;"><STRONG>错误描述</STRONG></TH>
+                    <TH><STRONG>First</STRONG></TH>
+                    <TH><STRONG>Second</STRONG></TH>
+                    <TH><STRONG>Third</STRONG></TH>
+                </TR>
+                {% each fail_testcase %}
+                <tr class="fail">
+                    <td ><a href="{{it.script_path}}">{{it.name}}</a></td>
+                    <td >{{it.module}}</td>
+                    <td >{{it.info}}</td>
+                    <td style="text-align:left;">
+                    错误步骤：{{it.action_name}} <br>
+                    所属页面：{{it.page}} <br>
+                    接口名称：{{it.action}} <br>
+                    具体报错：{{it.error_msg}}
+                    </td>
+                    {% each it.log_list %}
+                        {% if it.log_path != "" %}
+                            <td >
+                                <a href='{{it.log_path}}'>Detail</a>
+                                {% if it.shot_path != "" %}
+                                    <a href='{{it.shot_path}}'>screenShot</a>
+                                {% end %}
+                            </td>
+                        {% else %}
+                            <td >
+                                N/A
+                            </td>
+                        {% end %}
+                    {% end %}
+                </tr>
+                {% end %}
+            </table><br>
+            </div>
+            {% end %}
+
+            <!--开始处理未执行的用例-->
+            {% if unexe_case_num > "0" %}
+            <div class="tab">
+            <table >
+                <TBODY>
+                    <TR class=fail_title>
+                        <TH colSpan=y align=center><STRONG>Unexed Test Case Results</STRONG></TH>
+                    </TR>
+                    <TR>
+                        <TH><STRONG>用例名</STRONG></TH>
+                        <TH><STRONG>所属模块</STRONG></TH>
+                        <TH><STRONG>描述</STRONG></TH>
+                        <TH><STRONG>First</STRONG></TH>
+                        <TH><STRONG>Second</STRONG></TH>
+                        <TH><STRONG>Third</STRONG></TH>
+                    </TR>
+                    {% each unexe_testcase %}
+                    <tr class='fail'>
+                        <td ><a href="{{it.script_path}}">{{it.name}}</a></td>
+                        <td >{{it.module}}</td>
+                        <td >{{it.info}}</td>
+                        <td >N/A</td>
+                        <td >N/A</td>
+                        <td >N/A</td>
+                    </tr>
+                    {% end %}
+                </TBODY>
+            </table><br>
+            </div>
+            {% end %}
+
+            <!--开始处理执行成功的用例-->
+            {% if pass_case_num > "0" %}
+            <div class="tab">
+            <table style="width:100%">
+                <TR class=fail_title>
+                    <TH colSpan=6 align=center><STRONG>Passed Test Case Results</STRONG></TH>
+                </TR>
+                <TR>
+                    <TH><STRONG>用例名</STRONG></TH>
+                    <TH><STRONG>所属模块</STRONG></TH>
+                    <TH><STRONG>描述</STRONG></TH>
+                    <TH><STRONG>First</STRONG></TH>
+                    <TH><STRONG>Second</STRONG></TH>
+                    <TH><STRONG>Third</STRONG></TH>
+                </TR>
+                {% each pass_testcase %}
+                <tr class='success'>
+                    <td ><a href="{{it.script_path}}">{{it.name}}</a></td>
+                    <td >{{it.module}}</td>
+                    <td >{{it.info}}</td>
+                    {% each it.log_list %}
+                        {% if it.log_path != "" %}
+                            <td >
+                                <a href='{{it.log_path}}'>Detail</a>
+                                {% if it.shot_path != "" %}
+                                    <a href='{{it.shot_path}}'>screenShot</a>
+                                {% end %}
+                            </td>
+                        {% else %}
+                            <td >
+                                N/A
+                            </td>
+                        {% end %}
+                    {% end %}
+                </tr>
+                {% end %}
+            </table><br>
+            </div>
+            {% end %}
+
+        </DIV>
+    </BODY>
+</HTML>

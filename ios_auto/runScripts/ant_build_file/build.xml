@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MyTask" basedir="." default="compress-js">
+    <property name="src.dir" value="../../src"/>
+
+    <target name="compress-framework-js">
+      <!--合并小文件为一个资源文件 -->  
+      <concat  
+          destfile="${src.dir}/framework/importall.js" 
+          fixlastline="true" encoding="UTF-8">  
+          <fileset dir="${src.dir}/framework/" includes="business/*.js,config/*.js,libs/tuneup/*.js,util/*.js" excludes="libs/tuneup/tuneup.js">
+          </fileset>  
+      </concat> 
+    </target>
+
+    <target name="compress-common-js" depends="compress-framework-js">
+      <!--合并小文件为一个资源文件 -->  
+      <concat  
+          destfile="${src.dir}/common/importall.js" 
+          fixlastline="true" encoding="UTF-8">  
+          <fileset dir="${src.dir}/common/" includes="config/*.js,page/*.js">
+          </fileset>  
+      </concat>
+    </target>
+
+    <target name="compress-js" depends="compress-common-js">
+      <!--合并小文件为一个资源文件 -->  
+      <concat  
+          destfile="${src.dir}/baseline/importall.js" 
+          fixlastline="true" encoding="UTF-8">  
+          <fileset dir="${src.dir}/" includes="framework/importall.js,common/importall.js,baseline/page/*.js,baseline/page/search/*.js,baseline/page/route/*.js,baseline/data/Data.js">
+          </fileset>  
+      </concat>  
+  </target>
+</project>

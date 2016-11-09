@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style>
+        table.task_info, tr ,td {
+            border: 1px solid;
+            align: center;
+            font-family: monospace; 
+        }
+
+        table.result {
+            border: 1;
+            align: center;
+            font-family: monospace; 
+        }
+
+        tr.crash {
+            background-color: yellow;
+        }
+
+        </style>
+    </head>
+    <title>Stablity Test Result</title>
+    <BODY>
+    <br>
+    <div>
+        <div><h3>邮件正文，只能看概要，具体信息，请下载附件、解压，打开report.html 进行查看</h3></div>
+        <br>
+
+        <div ><h1>详细信息</h1></div>
+        {% each devices %}
+        <div>
+            <table class="result">
+                <tr>
+                    <td>设备名</td>
+                    <td>{{it.device_name}}</td>
+                </tr>
+                <tr>
+                    <td>设备唯一标识</td>
+                    <td>{{it.device_udid}}</td>
+                </tr>
+                <tr>
+                    <td>设备系统版本</td>
+                    <td>{{it.device_product_version}}</td>
+                </tr>
+                <tr>
+                    <td>设备系统build 版本</td>
+                    <td>{{it.device_build_version}}</td>
+                </tr>
+                <tr>
+                    <td>所执行的ipa</td>
+                    <td>{{it.ipa_url}}</td>
+                </tr>
+                <tr>
+                    <td>所执行的时间</td>
+                    <td>{{it.run_hours}} 小时</td>
+                </tr>
+                <tr>
+                    <td>执行情况</td>
+                    <td>执行次数：{{it.execute_count}} <a href="./{{it.execute_log_path}}">日志详情</a></td>
+                </tr>
+                <tr class="crash">
+                    <td>崩溃情况</td>
+                    <td>崩溃次数：{{it.crash_count}} <a href="{{it.crash_log_path}}">日志详情</a></td>
+                </tr>
+                
+            </table>
+            <br/>
+        </div>
+        {% end %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#/bin/bash
+
+app_path=$1
+
+if [ `python MobileDevice/ list | wc -l` -lt 2 ];then
+    echo -e "\033[41;36m 无连接的设备 \033[0m"
+    exit 1
+fi
+
+python MobileDevice/ install uploadapp ${app_path}
+if [[ $? -ne 0 ]];then
+    echo -e "\033[41;36m 上传文件失败,设备可能终端 \033[0m"
+    exit 1
+fi
+python MobileDevice/ install installapp ${app_path}
+if [[ $? -ne 0 ]];then
+    echo -e "\033[41;36m 安装失败,请检查签名 \033[0m"
+    exit 2
+fi
